@@ -1,0 +1,10 @@
+version: '3'
+services:
+  archery-wechat:
+    image: registry.cn-guangzhou.aliyuncs.com/cpc-open/archery-wechat:v1.0.0
+    container_name: archery-wechat
+    hostname: archery-wechat
+    restart: always
+    network_mode: bridge
+    volumes:
+      - "./config.yaml:/opt/archery-wechat/config.yaml"

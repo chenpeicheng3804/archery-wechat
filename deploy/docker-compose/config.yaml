@@ -1,0 +1,21 @@
+mysql:
+  user: root
+  password: 123456
+  host: 127.0.0.1
+  port: 3306
+  dbname: archery
+redis:
+  user: root
+  password: 123456
+  Addr: 127.0.0.1:6379
+  db: 0
+wechat:
+  # 企微机器人webhook
+  webhook: https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=xxxx
+archery:
+  # 消息推送工单链接地址
+  webhost: http://127.0.0.1:9123
+  # 监听资源组工单
+  group:
+    - prod
+    - staging

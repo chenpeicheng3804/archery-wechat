@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: archery-wechat
+  labels:
+    name: archery-wechat
+data:
+  config.yaml: |
+    mysql:
+      user: root
+      password: 123456
+      host: 127.0.0.1
+      port: 3306
+      dbname: archery
+    redis:
+      user: root
+      password: 123456
+      Addr: 127.0.0.1:6379
+      db: 0
+    wechat:
+      # 企微机器人webhook
+      webhook: https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=xxxx
+    archery:
+      # 消息推送工单链接地址
+      webhost: http://127.0.0.1:9123
+      # 监听资源组工单
+      group:
+        - prod
+        - staging
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: archery-wechat
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: archery-wechat
+  template:
+    metadata:
+      labels:
+        name: archery-wechat
+    spec:
+      serviceAccount: archery-wechat
+      restartPolicy: Always
+      containers:
+        - name: archery-wechat
+          image: registry.cn-guangzhou.aliyuncs.com/cpc-open/archery-wechat:v1.0.0
+          imagePullPolicy: Always
+          volumeMounts:
+            - name: config
+              mountPath: "/opt/archery-wechat/config.yaml"
+      volumes:
+        - name: config
+          configMap:
+            name: archery-wechat
